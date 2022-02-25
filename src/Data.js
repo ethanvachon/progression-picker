@@ -18,3 +18,7 @@ export let keys = [
     "Bb",
     "B",
 ]
+
+export let modes = [
+    "Major",
+]

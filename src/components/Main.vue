@@ -1,11 +1,14 @@
 <template>
-  {{ state.keys[Math.floor(Math.random() * 13)] }}<br>
-  {{ state.chords[Math.floor(Math.random() * state.chords.length)] }}
+  <button @click="randomize()">Randomize</button><br>
+  {{ state.randomProgression }}<br>
+  {{ state.randomKey }}
+  {{ state.randomMode }}
 </template>
 
 <script>
-import {keys, chords} from "../Data.js"
+import {keys, chords, modes} from "../Data.js"
 import { reactive } from "vue"
+//import * as Tone from 'tone'
 
 export default {
   name: "Main",
@@ -14,9 +17,18 @@ export default {
       test: "testing",
       keys: keys,
       chords: chords,
+      modes: modes,
+      randomProgression: null,
+      randomKey: null,
+      randomMode: null,
     })
     return {
-      state
+      state,
+      randomize: function () {
+        this.state.randomKey = this.state.keys[Math.floor(Math.random() * state.keys.length)]
+        this.state.randomProgression = this.state.chords[Math.floor(Math.random() * state.chords.length)]
+        this.state.randomMode = this.state.modes[Math.floor(Math.random() * state.modes.length)]
+      },
     }
   }
 };
