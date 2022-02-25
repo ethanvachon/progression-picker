@@ -1,3 +1,3 @@
 # progression-picker
-It's just kinda a thing that picks a key & chord progression
+It's just kinda a thing that picks a major key & chord progression
 (for funsies)
