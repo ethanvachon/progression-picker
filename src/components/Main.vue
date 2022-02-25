@@ -6,12 +6,14 @@
       <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord }}</p>
     </div>
   </div>
+  <div id="staff"></div>
 </template>
 
 <script>
 import {keys, chords, modes} from "../Data.js"
-import { reactive } from "vue"
+import { reactive, onMounted } from "vue"
 //import * as Tone from 'tone'
+import Vex from 'vexflow';
 
 export default {
   name: "Main",
@@ -25,6 +27,13 @@ export default {
       randomProgression: [],
       randomKey: null,
       randomMode: null,
+
+      VF: Vex.Flow,
+      context: null,
+      stave: null,
+    })
+    onMounted(async() => {
+        
     })
     return {
       state,
@@ -37,6 +46,17 @@ export default {
         }
         this.state.randomMode = this.state.modes[Math.floor(Math.random() * state.modes.length)]
         this.state.ready = true
+        var notes = [];
+        this.state.randomProgression.forEach(n => {
+          notes.push(new this.state.VF.StaveNote({clef: "treble", keys: [n[0] +"/4"], duration: "q" }));
+          if(n[1] != " ") {
+            notes[notes.length - 1].addAccidental(0, new this.state.VF.Accidental(n[1]))
+          }
+        })
+        var voice = new this.state.VF.Voice({num_beats: 4,  beat_value: 4});
+        voice.addTickables(notes);
+        new this.state.VF.Formatter().joinVoices([voice]).format([voice], 350);
+        voice.draw(this.state.context, this.state.stave);
       },
       determineMinMaj: function (key) {
         let keyInScale
@@ -73,6 +93,20 @@ export default {
         return
       },
       reset: function () {
+        const staff = document.getElementById('staff');
+        while (staff.hasChildNodes()) {
+          staff.removeChild(staff.lastChild);
+        }
+
+        var div = document.getElementById("staff")
+        var renderer = new this.state.VF.Renderer(div, this.state.VF.Renderer.Backends.SVG);  
+        renderer.resize(500, 500);
+        this.state.context = renderer.getContext();
+        this.state.context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+        this.state.stave = new this.state.VF.Stave(10, 40, 400);
+        this.state.stave.addClef("treble").addTimeSignature("4/4");
+        this.state.stave.setContext(this.state.context).draw();
+
         this.state.unprocessedProgression = null
         this.state.randomProgression = []
         this.state.randomKey = null
