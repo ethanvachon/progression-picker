@@ -44,16 +44,47 @@ export default {
         this.state.ready = true
       },
       determineMinMaj: function (key) {
-        let keyInScale = this.state.randomKey.scale[(key-1)]
-        if(keyInScale.includes("#")) {
-          keyInScale = this.state.randomKey.scale[key][0] + "b"
+        let keyInScale
+        switch(key) {
+          case 1:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Maj/Ionian")
+            break;
+          case 2:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Min/Dorian")
+            break;
+          case 3:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Min/Phrygian")
+            break;
+          case 4:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Maj/Lydian")
+            break;
+          case 5:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Maj/Mixolydian")
+            break;
+          case 6:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Min/Aeolian")
+            break;
+          case 7:
+            keyInScale = this.state.randomKey.scale[(key-1)]
+            this.state.randomProgression.push(keyInScale + " Dim/Locrian")
+            break;
         }
-        let progressionKey = this.state.keys.find(k => k.root == keyInScale || k.root == keyInScale)
-        if(this.state.randomKey.scale.includes(progressionKey.scale[2])) {
-          this.state.randomProgression.push(keyInScale + " Major")
-        } else {
-          this.state.randomProgression.push(keyInScale + " Minor")
-        }
+        // let keyInScale = this.state.randomKey.scale[(key-1)]
+        // if(keyInScale.includes("#")) {
+        //   keyInScale = this.state.randomKey.scale[key][0] + "b"
+        // }
+        // let progressionKey = this.state.keys.find(k => k.root == keyInScale)
+        // if(this.state.randomKey.scale.includes(progressionKey.scale[2])) {
+        //   this.state.randomProgression.push(keyInScale + " Major")
+        // } else {
+        //   this.state.randomProgression.push(keyInScale + " Minor")
+        // }
         return
       },
       reset: function () {
