@@ -30,17 +30,12 @@ export default {
       state,
       randomize: function () {
         this.reset()
-
         this.state.randomKey = this.state.keys[Math.floor(Math.random() * state.keys.length)]
-
         this.state.unprocessedProgression = this.state.chords[Math.floor(Math.random() * state.chords.length)]
-
         for(let i=0;i<this.state.unprocessedProgression.length;i++) {
           this.determineMinMaj(this.state.unprocessedProgression[i], i)
         }
-
         this.state.randomMode = this.state.modes[Math.floor(Math.random() * state.modes.length)]
-
         this.state.ready = true
       },
       determineMinMaj: function (key) {
@@ -75,16 +70,6 @@ export default {
             this.state.randomProgression.push(keyInScale + " Dim/Locrian")
             break;
         }
-        // let keyInScale = this.state.randomKey.scale[(key-1)]
-        // if(keyInScale.includes("#")) {
-        //   keyInScale = this.state.randomKey.scale[key][0] + "b"
-        // }
-        // let progressionKey = this.state.keys.find(k => k.root == keyInScale)
-        // if(this.state.randomKey.scale.includes(progressionKey.scale[2])) {
-        //   this.state.randomProgression.push(keyInScale + " Major")
-        // } else {
-        //   this.state.randomProgression.push(keyInScale + " Minor")
-        // }
         return
       },
       reset: function () {
