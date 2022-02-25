@@ -5,6 +5,7 @@
     <div style="display:flex;justify-content:center;">
       <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord }}</p>
     </div>
+    <button @click="playProgression()">Play Progression</button>
   </div>
   <div id="staff"></div>
 </template>
@@ -27,7 +28,6 @@ export default {
       randomProgression: [],
       randomKey: null,
       randomMode: null,
-
       VF: Vex.Flow,
       context: null,
       stave: null,
@@ -100,7 +100,7 @@ export default {
 
         var div = document.getElementById("staff")
         var renderer = new this.state.VF.Renderer(div, this.state.VF.Renderer.Backends.SVG);  
-        renderer.resize(500, 500);
+        renderer.resize(500, 150);
         this.state.context = renderer.getContext();
         this.state.context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
         this.state.stave = new this.state.VF.Stave(10, 40, 400);
@@ -111,6 +111,9 @@ export default {
         this.state.randomProgression = []
         this.state.randomKey = null
         this.state.randomMode = null
+      },
+      playProgression: function () {
+        console.log("Playing sound!")
       },
     }
   }
