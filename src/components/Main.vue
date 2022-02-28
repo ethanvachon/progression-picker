@@ -3,7 +3,7 @@
   <div v-if="state.ready">
     <p>In the key of {{ state.randomKey.root }} {{ state.randomMode }}</p>
     <div style="display:flex;justify-content:center;">
-      <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord }}</p>
+      <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord.label }}</p>
     </div>
     <button @click="playProgression()">Play Progression</button>
   </div>
@@ -48,9 +48,11 @@ export default {
         this.state.ready = true
         var notes = [];
         this.state.randomProgression.forEach(n => {
-          notes.push(new this.state.VF.StaveNote({clef: "treble", keys: [n[0] +"/4"], duration: "q" }));
-          if(n[1] != " ") {
-            notes[notes.length - 1].addAccidental(0, new this.state.VF.Accidental(n[1]))
+          notes.push(new this.state.VF.StaveNote({clef: "treble", keys: [n.chord[0][0] +"/4", n.chord[1][0] +"/4", n.chord[2][0] +"/4"], duration: "q" }));
+          for(let i = 0;i<3;i++){
+            if (n.chord[i][1]) {
+              notes[notes.length - 1].addAccidental(i, new this.state.VF.Accidental(n.chord[i][1]))
+            }
           }
         })
         var voice = new this.state.VF.Voice({num_beats: 4,  beat_value: 4});
@@ -60,34 +62,71 @@ export default {
       },
       determineMinMaj: function (key) {
         let keyInScale
+        let toPush
+        let fullScale
         switch(key) {
           case 1:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Maj/Ionian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Maj/Ionian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
           case 2:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Min/Dorian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Min/Dorian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
           case 3:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Min/Phrygian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Min/Phrygian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
           case 4:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Maj/Lydian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Maj/Lydian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
           case 5:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Maj/Mixolydian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Maj/Mixolydian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
           case 6:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Min/Aeolian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Min/Aeolian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
           case 7:
             keyInScale = this.state.randomKey.scale[(key-1)]
-            this.state.randomProgression.push(keyInScale + " Dim/Locrian")
+            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
+            toPush = {
+              label: keyInScale + " Dim/Locrian",
+              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+            }
+            this.state.randomProgression.push(toPush)
             break;
         }
         return

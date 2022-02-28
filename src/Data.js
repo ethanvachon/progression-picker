@@ -34,7 +34,7 @@ export let keys = [
     },
     {
         root: "Gb",
-        scale: ["Gb","Ab","Bb","B","Db","Eb","F","Gb"],
+        scale: ["Gb","Ab","Bb","Cb","Db","Eb","F","Gb"],
     },
     {
         root: "G",
