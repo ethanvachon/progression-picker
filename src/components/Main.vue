@@ -21,13 +21,17 @@ export default {
   setup() {
     const state = reactive({
       ready: false,
+
       keys: keys,
       chords: chords,
       modes: modes,
+      
       unprocessedProgression: null,
       randomProgression: [],
       randomKey: null,
       randomMode: null,
+
+      progressionChords: [],
       VF: Vex.Flow,
       context: null,
       stave: null,
@@ -35,6 +39,7 @@ export default {
     onMounted(async() => {
         
     })
+    // bug exists where the index of the accidental is determined by the uninverted chord, instead of actual
     return {
       state,
       randomize: function () {
@@ -69,54 +74,56 @@ export default {
           fullScale = this.state.keys.find(k => k.root == alternateNote)
         }
         fullScale = fullScale.scale
+        let chord = [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])]
+        this.state.progressionChords.push(chord)
         let toPush
         switch(key) {
           case 1:
             toPush = {
               label: keyInScale + " Maj/Ionian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
           case 2:
             toPush = {
               label: keyInScale + " Min/Dorian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
           case 3:
             toPush = {
               label: keyInScale + " Min/Phrygian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
           case 4:
             toPush = {
               label: keyInScale + " Maj/Lydian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
           case 5:
             toPush = {
               label: keyInScale + " Maj/Mixolydian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
           case 6:
             toPush = {
               label: keyInScale + " Min/Aeolian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
           case 7:
             toPush = {
               label: keyInScale + " Dim/Locrian",
-              chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
+              chord: chord,
             }
             this.state.randomProgression.push(toPush)
             break;
@@ -138,6 +145,7 @@ export default {
         this.state.stave.addClef("treble").addTimeSignature("4/4");
         this.state.stave.setContext(this.state.context).draw();
 
+        this.state.progressionChords = []
         this.state.unprocessedProgression = null
         this.state.randomProgression = []
         this.state.randomKey = null
