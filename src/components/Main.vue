@@ -61,13 +61,17 @@ export default {
         voice.draw(this.state.context, this.state.stave);
       },
       determineMinMaj: function (key) {
-        let keyInScale
+        let keyInScale = this.state.randomKey.scale[(key-1)]
+        let fullScale = this.state.keys.find(k => k.root == keyInScale)
+        if(!fullScale) {
+          let baseScale = this.state.keys.find(k => k.root == "C")
+          let alternateNote = (baseScale.scale[(baseScale.scale.indexOf(keyInScale[0]) + 1)] + "b")
+          fullScale = this.state.keys.find(k => k.root == alternateNote)
+        }
+        fullScale = fullScale.scale
         let toPush
-        let fullScale
         switch(key) {
           case 1:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Maj/Ionian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
@@ -75,8 +79,6 @@ export default {
             this.state.randomProgression.push(toPush)
             break;
           case 2:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Min/Dorian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
@@ -84,8 +86,6 @@ export default {
             this.state.randomProgression.push(toPush)
             break;
           case 3:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Min/Phrygian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
@@ -93,8 +93,6 @@ export default {
             this.state.randomProgression.push(toPush)
             break;
           case 4:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Maj/Lydian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
@@ -102,8 +100,6 @@ export default {
             this.state.randomProgression.push(toPush)
             break;
           case 5:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Maj/Mixolydian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
@@ -111,8 +107,6 @@ export default {
             this.state.randomProgression.push(toPush)
             break;
           case 6:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Min/Aeolian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
@@ -120,8 +114,6 @@ export default {
             this.state.randomProgression.push(toPush)
             break;
           case 7:
-            keyInScale = this.state.randomKey.scale[(key-1)]
-            fullScale = this.state.keys.find(k => k.root == keyInScale).scale
             toPush = {
               label: keyInScale + " Dim/Locrian",
               chord: [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])],
