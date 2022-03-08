@@ -1,13 +1,15 @@
 <template>
-  <button @click="randomize()">Randomize</button><br>
-  <div v-if="state.ready">
-    <p>In the key of {{ state.randomKey.root }} {{ state.randomMode }}</p>
-    <div style="display:flex;justify-content:center;">
-      <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord.label }}</p>
+  <div class="text-center mt-2">
+    <button class="btn-sm btn-primary" @click="randomize()">Randomize</button><br>
+    <div v-if="state.ready">
+      <p>In the key of {{ state.randomKey.root }} {{ state.randomMode }}</p>
+      <div style="display:flex;justify-content:center;">
+        <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord.label }}</p>
+      </div>
+      <button class="btn-sm btn-primary" @click="playProgression()">Play Progression</button>
     </div>
-    <button @click="playProgression()">Play Progression</button>
+    <div id="staff"></div>
   </div>
-  <div id="staff"></div>
 </template>
 
 <script>
@@ -54,8 +56,6 @@ export default {
         this.state.randomProgression.forEach(n => {
           notes.push(new this.state.VF.StaveNote({clef: "treble", keys: [n.chord[0][0] +"/4", n.chord[1][0] +`/${n.chord[0][0] == "A" || n.chord[0][0] == "Bb" || n.chord[0][0] == "B" ? 5 : 4}`, n.chord[2][0] +`/${n.chord[0][0] == "F" || n.chord[0][0] == "Gb" || n.chord[0][0] == "G" || n.chord[0][0] == "Ab" || n.chord[0][0] == "A" || n.chord[0][0] == "Bb" || n.chord[0][0] == "B" ? 5 : 4}`], duration: "q" }));
           for(let i = 0;i<3;i++){
-            // console.log(notes[notes.length-1].keys[i])
-            // console.log(n.chord[i])
             if (n.chord[i][1]) {
               notes[notes.length - 1].addAccidental(i, new this.state.VF.Accidental(n.chord[i][1]))
             }
