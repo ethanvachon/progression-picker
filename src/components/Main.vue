@@ -39,7 +39,6 @@ export default {
     onMounted(async() => {
         
     })
-    // bug exists where the index of the accidental is determined by the uninverted chord, instead of auto sorted chord
     return {
       state,
       randomize: function () {
@@ -53,8 +52,10 @@ export default {
         this.state.ready = true
         var notes = [];
         this.state.randomProgression.forEach(n => {
-          notes.push(new this.state.VF.StaveNote({clef: "treble", keys: [n.chord[0][0] +"/4", n.chord[1][0] +"/4", n.chord[2][0] +"/4"], duration: "q" }));
+          notes.push(new this.state.VF.StaveNote({clef: "treble", keys: [n.chord[0][0] +"/4", n.chord[1][0] +`/${n.chord[0][0] == "A" || n.chord[0][0] == "Bb" || n.chord[0][0] == "B" ? 5 : 4}`, n.chord[2][0] +`/${n.chord[0][0] == "F" || n.chord[0][0] == "Gb" || n.chord[0][0] == "G" || n.chord[0][0] == "Ab" || n.chord[0][0] == "A" || n.chord[0][0] == "Bb" || n.chord[0][0] == "B" ? 5 : 4}`], duration: "q" }));
           for(let i = 0;i<3;i++){
+            // console.log(notes[notes.length-1].keys[i])
+            // console.log(n.chord[i])
             if (n.chord[i][1]) {
               notes[notes.length - 1].addAccidental(i, new this.state.VF.Accidental(n.chord[i][1]))
             }
