@@ -1,13 +1,17 @@
 <template>
-  <div class="text-center mt-2">
-    <button class="btn-sm btn-primary" @click="randomize()">Randomize</button><br>
-    <div v-if="state.ready">
-      <p>In the key of {{ state.randomKey.root }} {{ state.randomMode }}</p>
+  <div class="d-flex flex-column align-items-center mt-4">
+    <div class="d-flex justify-content-center">
+      <button class="btn-sm btn-primary mx-2" @click="randomize()">Randomize</button><br>
+      <button class="btn-sm btn-primary mx-2" @click="playProgression()" v-if="state.ready">Play Progression</button>
+    </div>
+    
+    <div class="card border-2 mt-3" v-if="state.ready">
+      <h5 class="card-header m-0">{{ state.randomKey.root }} {{ state.randomMode }}</h5>
       <div style="display:flex;justify-content:center;">
         <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord.label }}</p>
       </div>
-      <button class="btn-sm btn-primary" @click="playProgression()">Play Progression</button>
     </div>
+
     <div id="staff"></div>
   </div>
 </template>
@@ -161,5 +165,7 @@ export default {
 </script>
 
 <style scoped>
-
+.card {
+  width: fit-content;
+}
 </style>
