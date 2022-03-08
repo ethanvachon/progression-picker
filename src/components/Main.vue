@@ -39,7 +39,7 @@ export default {
     onMounted(async() => {
         
     })
-    // bug exists where the index of the accidental is determined by the uninverted chord, instead of actual
+    // bug exists where the index of the accidental is determined by the uninverted chord, instead of auto sorted chord
     return {
       state,
       randomize: function () {
