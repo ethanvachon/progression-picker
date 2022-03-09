@@ -7,8 +7,11 @@
     
     <div class="card border-2 mt-3" v-if="state.ready">
       <h5 class="card-header m-0">{{ state.randomKey.root }} {{ state.randomMode }}</h5>
-      <div style="display:flex;justify-content:center;">
-        <p style="margin:5px" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">{{ chord.label }}</p>
+      <div class="d-flex justify-content-center">
+        <div class="text-center" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">
+          <p style="margin:5px" >{{ chord.label }}</p>
+          <h6 class="fw-bold">{{ toRomanNumeral(state.unprocessedProgression[i]) }}</h6>
+        </div>
       </div>
     </div>
 
@@ -65,6 +68,7 @@ export default {
             }
           }
         })
+        console.log(notes)
         var voice = new this.state.VF.Voice({num_beats: 4,  beat_value: 4});
         voice.addTickables(notes);
         new this.state.VF.Formatter().joinVoices([voice]).format([voice], 350);
@@ -155,6 +159,34 @@ export default {
         this.state.randomProgression = []
         this.state.randomKey = null
         this.state.randomMode = null
+      },
+      toRomanNumeral: function(number) {
+        console.log(number)
+        let toReturn
+        switch (number) {
+          case 1:
+            toReturn = "I"
+            break;
+          case 2:
+            toReturn = "II"
+            break;
+          case 3:
+            toReturn = "III"
+            break;
+          case 4:
+            toReturn = "IV"
+            break;
+          case 5:
+            toReturn = "V"
+            break;
+          case 6:
+            toReturn = "VI"
+            break;
+          case 7:
+            toReturn = "VII"
+            break;
+        }
+        return toReturn
       },
       playProgression: function () {
         console.log("Playing sound!")
