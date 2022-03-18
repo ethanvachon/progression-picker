@@ -190,21 +190,17 @@ export default {
         const synth = new Tone.Synth().toDestination();
         const now = Tone.now()
 
-        synth.triggerAttackRelease("C4", "8n", now)
-        synth.triggerAttackRelease("C4", "8n", now)
-        synth.triggerAttackRelease("C4", "8n", now)
+        synth.triggerAttackRelease(`${state.randomProgression[0].chord[0]}4`, "8n", now)
+        console.log(state.randomProgression[0].chord[0])
 
-        synth.triggerAttackRelease("E4", "8n", now + 1)
-        synth.triggerAttackRelease("E4", "8n", now + 1)
-        synth.triggerAttackRelease("E4", "8n", now + 1)
+        synth.triggerAttackRelease(`${state.randomProgression[1].chord[0]}4`, "8n", now + 1)
+        console.log(state.randomProgression[1].chord[0])
 
-        synth.triggerAttackRelease("G4", "8n", now + 2)
-        synth.triggerAttackRelease("G4", "8n", now + 2)
-        synth.triggerAttackRelease("G4", "8n", now + 2)
+        synth.triggerAttackRelease(`${state.randomProgression[2].chord[0]}4`, "8n", now + 2)
+        console.log(state.randomProgression[2].chord[0])
 
-        synth.triggerAttackRelease("C5", "8n", now + 3)
-        synth.triggerAttackRelease("C5", "8n", now + 3)
-        synth.triggerAttackRelease("C5", "8n", now + 3)
+        synth.triggerAttackRelease(`${state.randomProgression[3].chord[0]}4`, "8n", now + 3)
+        console.log(state.randomProgression[3].chord[0])
       },
     }
   }
