@@ -68,7 +68,6 @@ export default {
             }
           }
         })
-        console.log(notes)
         var voice = new this.state.VF.Voice({num_beats: 4,  beat_value: 4});
         voice.addTickables(notes);
         new this.state.VF.Formatter().joinVoices([voice]).format([voice], 350);
@@ -161,7 +160,6 @@ export default {
         this.state.randomMode = null
       },
       toRomanNumeral: function(number) {
-        console.log(number)
         let toReturn
         switch (number) {
           case 1:
