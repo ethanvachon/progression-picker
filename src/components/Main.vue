@@ -22,7 +22,7 @@
 <script>
 import {keys, chords, modes} from "../Data.js"
 import { reactive, onMounted } from "vue"
-//import * as Tone from 'tone'
+import * as Tone from 'tone'
 import Vex from 'vexflow';
 
 export default {
@@ -187,7 +187,24 @@ export default {
         return toReturn
       },
       playProgression: function () {
-        console.log("Playing sound!")
+        const synth = new Tone.Synth().toDestination();
+        const now = Tone.now()
+
+        synth.triggerAttackRelease("C4", "8n", now)
+        synth.triggerAttackRelease("C4", "8n", now)
+        synth.triggerAttackRelease("C4", "8n", now)
+
+        synth.triggerAttackRelease("E4", "8n", now + 1)
+        synth.triggerAttackRelease("E4", "8n", now + 1)
+        synth.triggerAttackRelease("E4", "8n", now + 1)
+
+        synth.triggerAttackRelease("G4", "8n", now + 2)
+        synth.triggerAttackRelease("G4", "8n", now + 2)
+        synth.triggerAttackRelease("G4", "8n", now + 2)
+
+        synth.triggerAttackRelease("C5", "8n", now + 3)
+        synth.triggerAttackRelease("C5", "8n", now + 3)
+        synth.triggerAttackRelease("C5", "8n", now + 3)
       },
     }
   }
