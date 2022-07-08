@@ -54,10 +54,25 @@ export default {
         this.reset()
         this.state.randomKey = this.state.keys[Math.floor(Math.random() * state.keys.length)]
         this.state.unprocessedProgression = this.state.chords[Math.floor(Math.random() * state.chords.length)]
+        this.state.randomMode = this.state.modes[Math.floor(Math.random() * state.modes.length)]
+        
+        if(this.state.randomMode == "Minor") {
+          this.state.randomKey.minorScale = JSON.parse(JSON.stringify(this.state.randomKey.scale));
+          for (let i = 0; i <= 7; i++) {
+            if(i == 2 || i == 5 || i == 6) {
+              if(this.state.randomKey.minorScale[i].length > 1 && this.state.randomKey.minorScale[i][1] == "#") {
+                this.state.randomKey.minorScale[i] = this.state.randomKey.minorScale[i][0]
+              } else if(this.state.randomKey.minorScale[i].length > 1 && this.state.randomKey.minorScale[i][1] == "b" && this.state.randomKey.minorScale[i - 1][0] != this.state.randomKey.minorScale[i - 1]) {
+                this.state.randomKey.minorScale[i] = this.state.randomKey.minorScale[i - 1][0]
+              } else if(this.state.randomKey.minorScale[i].length == 1) {
+                this.state.randomKey.minorScale[i] += 'b'
+              }
+            }
+          }
+        }
         for(let i=0;i<this.state.unprocessedProgression.length;i++) {
           this.determineMinMaj(this.state.unprocessedProgression[i], i)
         }
-        this.state.randomMode = this.state.modes[Math.floor(Math.random() * state.modes.length)]
         this.state.ready = true
         var notes = [];
         this.state.randomProgression.forEach(n => {
@@ -74,7 +89,8 @@ export default {
         voice.draw(this.state.context, this.state.stave);
       },
       determineMinMaj: function (key) {
-        let keyInScale = this.state.randomKey.scale[(key-1)]
+        let scale = this.state.randomMode == "Major" ? this.state.randomKey.scale : this.state.randomKey.minorScale
+        let keyInScale = scale[(key-1)]
         let fullScale = this.state.keys.find(k => k.root == keyInScale)
         if(!fullScale) {
           let baseScale = this.state.keys.find(k => k.root == "C")
@@ -82,7 +98,7 @@ export default {
           fullScale = this.state.keys.find(k => k.root == alternateNote)
         }
         fullScale = fullScale.scale
-        let chord = [this.state.randomKey.scale.find(n => n[0] == fullScale[0][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[2][0]), this.state.randomKey.scale.find(n => n[0] == fullScale[4][0])]
+        let chord = [scale.find(n => n[0] == fullScale[0][0]), scale.find(n => n[0] == fullScale[2][0]), scale.find(n => n[0] == fullScale[4][0])]
         this.state.progressionChords.push(chord)
         let toPush
         switch(key) {

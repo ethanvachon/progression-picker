@@ -60,4 +60,5 @@ export let keys = [
 
 export let modes = [
     "Major",
+    "Minor"
 ]
