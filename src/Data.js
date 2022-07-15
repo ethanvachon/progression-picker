@@ -58,6 +58,16 @@ export let keys = [
     },
 ]
 
+export let numerals = [
+    {
+        mode: "Major",
+        numerals: ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'],
+    }, {
+        mode: "Minor",
+        numerals: ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'],
+    }
+]
+
 export let modes = [
     "Major",
     "Minor"

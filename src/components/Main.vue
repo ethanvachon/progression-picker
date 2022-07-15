@@ -9,8 +9,8 @@
       <h5 class="card-header m-0">{{ state.randomKey.root }} {{ state.randomMode }}</h5>
       <div class="d-flex justify-content-center">
         <div class="text-center" v-for="(chord,i) in state.randomProgression" :key="(chord + i)">
-          <p style="margin:5px" >{{ chord.label }}</p>
-          <h6 class="fw-bold">{{ toRomanNumeral(state.unprocessedProgression[i]) }}</h6>
+          <p class="m-0 fw-bold">{{chord.chord[0]}}</p>
+          <h6 class="mx-3">{{ toRomanNumeral(state.unprocessedProgression[i]) }}</h6>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import {keys, chords, modes} from "../Data.js"
+import {keys, chords, modes, numerals} from "../Data.js"
 import { reactive, onMounted } from "vue"
 import * as Tone from 'tone'
 import Vex from 'vexflow';
@@ -34,6 +34,7 @@ export default {
       keys: keys,
       chords: chords,
       modes: modes,
+      numerals: numerals,
       
       unprocessedProgression: null,
       randomProgression: [],
@@ -91,67 +92,26 @@ export default {
       determineMinMaj: function (key) {
         let scale = this.state.randomMode == "Major" ? this.state.randomKey.scale : this.state.randomKey.minorScale
         let keyInScale = scale[(key-1)]
+        console.log(keyInScale)
         let fullScale = this.state.keys.find(k => k.root == keyInScale)
         if(!fullScale) {
           let baseScale = this.state.keys.find(k => k.root == "C")
-          let alternateNote = (baseScale.scale[(baseScale.scale.indexOf(keyInScale[0]) + 1)] + "b")
+          let alternateNote
+          if(keyInScale.includes('b')) {
+            alternateNote = (baseScale.scale[(baseScale.scale.indexOf(keyInScale[0]) - 1)])
+          } else {
+            alternateNote = (baseScale.scale[(baseScale.scale.indexOf(keyInScale[0]) + 1)] + "b")
+          }
           fullScale = this.state.keys.find(k => k.root == alternateNote)
         }
         fullScale = fullScale.scale
+        console.log(fullScale)
+        console.log(scale)
         let chord = [scale.find(n => n[0] == fullScale[0][0]), scale.find(n => n[0] == fullScale[2][0]), scale.find(n => n[0] == fullScale[4][0])]
         this.state.progressionChords.push(chord)
-        let toPush
-        switch(key) {
-          case 1:
-            toPush = {
-              label: keyInScale + " Maj/Ionian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-          case 2:
-            toPush = {
-              label: keyInScale + " Min/Dorian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-          case 3:
-            toPush = {
-              label: keyInScale + " Min/Phrygian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-          case 4:
-            toPush = {
-              label: keyInScale + " Maj/Lydian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-          case 5:
-            toPush = {
-              label: keyInScale + " Maj/Mixolydian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-          case 6:
-            toPush = {
-              label: keyInScale + " Min/Aeolian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-          case 7:
-            toPush = {
-              label: keyInScale + " Dim/Locrian",
-              chord: chord,
-            }
-            this.state.randomProgression.push(toPush)
-            break;
-        }
+        this.state.randomProgression.push({
+          chord: chord
+        })
         return
       },
       reset: function () {
@@ -176,31 +136,7 @@ export default {
         this.state.randomMode = null
       },
       toRomanNumeral: function(number) {
-        let toReturn
-        switch (number) {
-          case 1:
-            toReturn = "I"
-            break;
-          case 2:
-            toReturn = "II"
-            break;
-          case 3:
-            toReturn = "III"
-            break;
-          case 4:
-            toReturn = "IV"
-            break;
-          case 5:
-            toReturn = "V"
-            break;
-          case 6:
-            toReturn = "VI"
-            break;
-          case 7:
-            toReturn = "VII"
-            break;
-        }
-        return toReturn
+        return this.state.numerals.find(n => n.mode == this.state.randomMode).numerals[number - 1]
       },
       playProgression: function () {
         const synth = new Tone.Synth().toDestination();
